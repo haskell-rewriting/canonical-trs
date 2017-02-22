@@ -12,12 +12,15 @@ maintainer:          int-e@gmx.de
 -- copyright:
 -- category:
 build-type:          Simple
-extra-source-files:  ChangeLog.md
+extra-source-files:
+  Changelog
+  README.md
 cabal-version:       >=1.10
 
 executable canonical-trs
   main-is:             Main.hs
-  other-modules:       Canonicalize
+  other-modules:
+    Canonicalize
   -- other-extensions:
   build-depends:
     ansi-wl-pprint,
