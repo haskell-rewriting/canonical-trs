@@ -7,7 +7,7 @@ module Canonicalize (
 import Data.List
 import Data.Maybe
 import Control.Monad.State
-import qualified Data.Map as M
+import qualified Data.Map.Strict as M
 import qualified Data.Set as S
 import qualified Data.Rewriting.Problem as Problem
 import Data.Rewriting.Problem (Problem(..), RulesPair(..))
@@ -137,7 +137,9 @@ fingerPrintFuns trss = go trss (const 0)
     go trss fp = if length trss == length trss' then fp' else go trss' fp'
       where
         fp' = partitionToMap $ classify (\f -> (fp f, map (fpTrs f) trss)) fs
-        fpTrs f = sort . map (fingerprintRule (\g -> (fp g, f == g)))
+        fpTrs f =
+            M.fromListWith (+) .
+            map (\r -> (fingerprintRule (\g -> (fp g, f == g)) r, 1 :: Int))
         trss' = trss >>= classify (fingerprintRule fp')
 
 -- partition a list of objects according to a fingerprint function
