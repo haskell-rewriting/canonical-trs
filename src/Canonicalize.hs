@@ -87,16 +87,35 @@ canonicalFunsRs fpF rs = concat <$> mapM go rs1
     rs0 = [(fingerprintRule fpF r, r) | r <- map head . group . sort $ rs]
     rs1 = sortOn length (map (map snd) $ groupBy (\a b -> fst a == fst b) rs0)
     go :: Ord f => [Rule f Int] -> State [(M.Map f Int, Int)] [Rule Int Int]
+    go rs = state $ \mjs -> go' [(rs, mj) | mj <- mjs]
+    go' :: Ord f => [([Rule f Int], (M.Map f Int, Int))] ->
+           ([Rule Int Int], [(M.Map f Int, Int)])
+    go' xs@(([], _) : _) = ([], map snd xs)
+    go' xs =
+        let res = do
+                (rs, mj) <- xs
+                (r, rs') <- select rs
+                let (r', mj') = runState (canonicalFuns r) mj
+                return (r', (rs', mj'))
+            r' = minimum (map fst res)
+            res' = [b | (a, b) <- res, a == r']
+            (rs', mjs') = go' res'
+        in  (r' : rs', mjs')
+{-
     go rs = state $ \mjs ->
         let res = do
                 mj <- mjs
                 -- we could be more clever here by exploiting the partial
                 -- assignment in `mj`... but this is good enough for now.
-                when (length rs > 8) $ error "giving up!"
                 rs' <- permutations rs
                 return $ runState (mapM canonicalFuns rs') mj
             res' : _ = groupBy (\a b -> fst a == fst b) $ sortOn fst res
         in  (fst (head res'), map snd res')
+-}
+
+select :: [a] -> [(a, [a])]
+select [] = []
+select (x:xs) = (x, xs) : [(y, x:ys) | (y, ys) <- select xs]
 
 -- fingerprinting
 --
