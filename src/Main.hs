@@ -1,8 +1,8 @@
 module Main where
 
 import Canonicalize
+import TPDB
 import qualified Data.Rewriting.Problem as Problem
-import qualified Data.Rewriting.Problem.Xml as Problem
 import qualified Text.PrettyPrint.ANSI.Leijen as Pretty
 import System.Environment
 import System.FilePath
@@ -23,8 +23,14 @@ main = do
                     hPutStrLn stderr $ show error
                     exitFailure
         ([_], ".xml") -> do
-            problem <- Problem.xmlFileToProblem fn
-            process problem
+--            problem <- Data.Rewriting.Problem.Xml.xmlFileToProblem fn
+--            process problem
+            res <- fromXTCFile fn
+            case res of
+                Right problem -> process problem
+                Left error -> do
+                    hPutStrLn stderr error
+                    exitFailure
         _ -> do
             prog <- getProgName
             hPutStrLn stderr $ "Usage: " ++ prog ++ " [FILE.trs|FILE.xml]"

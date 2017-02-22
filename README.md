@@ -46,8 +46,7 @@ f2(v0))
 
 ## requirements
 
-`canonical-trs` depends on `term-rewriting-xml` which is available at
-https://github.com/ComputationWithBoundedResources/term-rewriting-xml
+all dependencies are available from hackage. http://hackage.haskell.org/
 
 ## wishlist
 
