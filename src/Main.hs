@@ -8,6 +8,8 @@ import System.Environment
 import System.FilePath
 import System.Exit
 import System.IO
+import qualified Paths_canonical_trs as P
+import Data.Version
 
 main :: IO ()
 main = do
@@ -39,6 +41,9 @@ main = do
 process :: Problem.Problem String String -> IO ()
 process =
     putStrLn .
+    (("(COMMENT produced by " ++ prog ++ ")\n") ++) .
     ($ "") . Pretty.displayS . Pretty.renderCompact .
     Problem.prettyWST Pretty.text Pretty.text .
     canonicalize
+  where
+    prog = "canonical-trs " ++ showVersion P.version

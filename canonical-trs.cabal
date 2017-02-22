@@ -3,24 +3,33 @@
 
 name:                canonical-trs
 version:             0.0
--- synopsis:
--- description:
+synopsis:            a tool for converting TRSs to canonical form
+homepage:            https://github.com/haskell-rewriting/canonical-trs
+description:
+  `canonical-trs` is a tool for converting term rewrite systems
+  to a canonical form that is invariant under permutation of rules
+  and renaming of function symbols.
 license:             MIT
 license-file:        LICENSE
 author:              Bertram Felgenhauer
-maintainer:          int-e@gmx.de
--- copyright:
--- category:
+maintainer:          Bertram Felgenhauer <int-e@gmx.de>
+copyright:           Copyright 2017 Bertram Felgenhauer
+category:            Logic
 build-type:          Simple
 extra-source-files:
   Changelog
   README.md
 cabal-version:       >=1.10
 
+source-repository head
+  type:     git
+  location: https://github.com/haskell-rewriting/canonical-trs
+
 executable canonical-trs
   main-is:             Main.hs
   other-modules:
-    Canonicalize
+    Canonicalize,
+    TPDB
   -- other-extensions:
   build-depends:
     ansi-wl-pprint,

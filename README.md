@@ -8,10 +8,13 @@ renaming of function symbols.
 
 Such a canonical form used to efficiently identify equivalent TRSs.
 
+Note that the output *will* change between versions.
+
 ## example
 
 ```
-# canonical-trs canonical-trs ~/cops/1.trs 
+# canonical-trs canonical-trs cops/1.trs
+(COMMENT produced by canonical-trs 0.0)
 
 
 
