@@ -84,9 +84,8 @@ canonicalFunsRs :: Ord f =>
     (f -> Int) -> [Rule f Int] -> State [(M.Map f Int, Int)] [Rule Int Int]
 canonicalFunsRs fpF rs = concat <$> mapM go rs1
   where
-    rs0 = [(fingerprintRule fpF r, r) | r <- map head . group . sort $ rs]
-    rs1 = sortOn length (map (map snd) $ groupBy (\a b -> fst a == fst b) $
-        sortBy (\a b -> fst a `compare` fst b) rs0)
+    rs0 = map head . group . sort $ rs
+    rs1 = sortOn length . classify (fingerprintRule fpF) $ rs0
     go :: Ord f => [Rule f Int] -> State [(M.Map f Int, Int)] [Rule Int Int]
     go rs = state $ \mjs -> go' [(rs, mj) | mj <- mjs]
     go' :: Ord f => [([Rule f Int], (M.Map f Int, Int))] ->
