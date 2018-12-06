@@ -12,14 +12,12 @@ import qualified Data.Set as S
 import System.FilePath
 import Data.Maybe
 import Control.Monad
+import qualified Data.Text as T
 
 fromXTCFile :: FilePath -> IO (Either String (R.Problem String String))
-fromXTCFile fp = problems <$> XTC.readProblems fp
+fromXTCFile fp = problem <$> XTC.readProblemF fp
 
-problems [p] = problem p
-problems []  = Left "XTC: No problems found."
-problems _   = Left "XTC: Multiple problems found."
-
+problem :: XTC.Problem XTC.Identifier XTC.Identifier -> Either String (R.Problem String String)
 problem p = do
     -- ignored: XTC.type_
     rules <- trs (XTC.trs p)
@@ -49,7 +47,7 @@ rules = map (\(l, r) -> R.Rule (term l) (term r))
 term (XTC.Var v) = R.Var (ident v)
 term (XTC.Node f ts) = R.Fun (ident f) (map term ts)
 
-ident = XTC.name
+ident = T.unpack . XTC.name
 
 strategy XTC.Full = R.Full
 strategy XTC.Innermost = R.Innermost
@@ -62,7 +60,7 @@ funcsym XTC.Funcsym{ XTC.fs_theory = Just _ } =
     Left "XTC: theory symbols not supported"
 funcsym XTC.Funcsym{ XTC.fs_replacementmap = Just _ } =
     Left "XTC: replacement maps not supported"
-funcsym f = return $ XTC.fs_name f
+funcsym f = return $ T.unpack $ XTC.fs_name f
     -- note: we lose arity information here
 
 startTerm XTC.Startterm_Full = R.AllTerms
