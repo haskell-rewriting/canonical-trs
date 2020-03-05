@@ -60,8 +60,9 @@ which can be obtained in several ways; one is to install the
 cabal update       # update cabal-install package database
 cabal sandbox init # optional, keeps all files local
 cabal install      # build everything including dependencies
-cabal exec -- canonical-trs cops1.trs
-cp .cabal-sandbox/bin/canonical-trs ~/bin
+cabal exec -- canonical-trs cops1.trs     # execute locally
+cp .cabal-sandbox/bin/canonical-trs ~/bin # copy binary elsewhere
+rm -r dist && cabal sandbox delete        # clean up build artifacts
 ```
 
 ## wishlist
