@@ -20,6 +20,7 @@ import Data.Rewriting.Term (Term(..))
 -- canonicalize a problem
 canonicalize :: Problem.Problem String String -> Problem.Problem String String
 canonicalize Problem{ theory = Just _ } = error "theory must be empty"
+canonicalize Problem{ signature = Just _ } = error "signature must be empty"
 canonicalize p = Problem{
         startTerms = startTerms p, -- :: StartTerms
         strategy   = strategy p,   -- :: Strategy
@@ -27,6 +28,7 @@ canonicalize p = Problem{
         rules      = rules',       -- :: RulesPair f v
         variables  = vars',        -- :: [v]
         symbols    = symbols',     -- :: [f]
+        signature  = Nothing,      -- :: Maybe [(f, Int)]
         comment    = Nothing       -- :: Maybe String
     }
   where

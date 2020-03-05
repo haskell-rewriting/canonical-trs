@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                canonical-trs
-version:             0.0
+version:             0.0.1
 synopsis:            a tool for converting TRSs to canonical form
 homepage:            https://github.com/haskell-rewriting/canonical-trs
 description:
@@ -36,10 +36,10 @@ executable canonical-trs
     containers,
     filepath,
     mtl,
-    term-rewriting,
+    term-rewriting >= 0.4 && < 0.5,
     text >= 1.2 && < 1.3,
     -- term-rewriting-xml,
-    tpdb >= 2.1 && < 2.2,
+    tpdb >= 2.1 && < 2.3,
     base >=4.6 && <5
   hs-source-dirs:      src
   default-language:    Haskell2010
